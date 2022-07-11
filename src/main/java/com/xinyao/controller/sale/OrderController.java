@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/order")
-@Api("APP端-订单")
+@Api(tags = "APP端-订单")
 @ApiResponses({
         @ApiResponse(code = 200,message = "OK",response = OrderVo.class),
 })

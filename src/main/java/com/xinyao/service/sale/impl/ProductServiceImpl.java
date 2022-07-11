@@ -91,6 +91,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("is_deleted", 0);
         queryWrapper.eq("is_shelves", 1);
+        queryWrapper.eq("id", id);
         return productMapper.selectOne(queryWrapper);
     }
 

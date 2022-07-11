@@ -15,10 +15,7 @@ import com.xinyao.service.sale.IOrderProductService;
 import com.xinyao.service.sale.IOrderService;
 import com.xinyao.service.sale.IProductService;
 import com.xinyao.service.usc.IUserService;
-import com.xinyao.util.JWTUtil;
-import com.xinyao.util.MD5Util;
-import com.xinyao.util.RedisUtil;
-import com.xinyao.util.SnUtil;
+import com.xinyao.util.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,7 +60,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             throw new RuntimeException("订单商品为空！！！");
         }
         for (OrderProductVo orderProductVo : orderVo.getOrderProductVoList()) {
-            Product product = productService.getInfoById(orderProductVo.getProductId());
+            Product product = productService.getById(orderProductVo.getProductId());
             if (product.getQuantity().compareTo(orderProductVo.getProductQuantity()) < 0) {
                 throw new RuntimeException("商品剩余数量不足，订单提交失败！！！");
             }
@@ -138,6 +135,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
         // 校验用户支付密码
         String userDealPassword = userService.getDealPassword();
+        if (StringUtils.isNullOrBlank(userDealPassword)) {
+            throw new RuntimeException("您尚未设置支付密码\n请设置后支付");
+        }
         if (!MD5Util.encrypt(orderVo.getUserDealPassword(), JWTUtil.getAccount()).equals(userDealPassword)) {
             throw new RuntimeException("您的交易密码错误");
         }

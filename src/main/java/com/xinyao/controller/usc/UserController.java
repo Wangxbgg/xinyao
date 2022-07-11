@@ -28,8 +28,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/user")
-@Api("APP端-用户")
-
+@Api(tags = "APP端-用户")
 @ApiResponses({
         @ApiResponse(code = 200,message = "OK",response = User.class),
 })

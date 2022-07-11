@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * @author Maple
@@ -39,8 +40,12 @@ public class LoginController {
     @GetMapping("sendMsg")
     @ApiOperation("发送验证码")
     public R sendMsg(String phone){
+        //用户手机号码校验
         if (StringUtils.isNullOrBlank(phone)) {
             return R.failed("手机号为空！！！");
+        }
+        if(!Pattern.matches("^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\\d{8}$",phone)){
+            return R.failed("手机号格式不正确！！！");
         }
         String number = RandomNumberUtil.getPhoneMessage();
         HttpClient client = new HttpClient();
@@ -75,12 +80,20 @@ public class LoginController {
     public R dealersLogin(@RequestBody JSONObject jsonObject){
         String phone = jsonObject.getString("phone");
         String code = jsonObject.getString("code");
+        /*//用户手机号码校验
         if (StringUtils.isNullOrBlank(phone)) {
             return R.failed("手机号为空！！！");
         }
+        if(!Pattern.matches("^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\\d{8}$",phone)){
+            return R.failed("手机号格式不正确！！！");
+        }
+        // 验证码校验
         if (StringUtils.isNullOrBlank(code)) {
             return R.failed("验证码为空！！！");
         }
+        if (code.length() != 6) {
+            return R.failed("验证码格式不正确！！！");
+        }*/
         try {
             User user = userService.login(phone, code);
             Long userId = user.getId();
