@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinyao.mapper.usc.UserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xinyao.bean.usc.User">
+        <id column="id" property="id" />
+        <result column="account" property="account" />
+        <result column="name" property="name" />
+        <result column="nick_name" property="nickName" />
+        <result column="password" property="password" />
+        <result column="password_date" property="passwordDate" />
+        <result column="deal_password" property="dealPassword" />
+        <result column="deal_password_date" property="dealPasswordDate" />
+        <result column="address" property="address" />
+        <result column="birthday" property="birthday" />
+        <result column="sex" property="sex" />
+        <result column="mobile" property="mobile" />
+        <result column="email" property="email" />
+        <result column="comment" property="comment" />
+        <result column="picture" property="picture" />
+        <result column="org_id" property="orgId" />
+        <result column="is_system" property="isSystem" />
+        <result column="create_id" property="createId" />
+        <result column="update_id" property="updateId" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="create_name" property="createName" />
+        <result column="update_name" property="updateName" />
+        <result column="is_deleted" property="isDeleted" />
+        <result column="status" property="status" />
+        <result column="type" property="type" />
+        <result column="fail_num" property="failNum" />
+        <result column="is_attestation" property="isAttestation" />
+        <result column="attestation_date" property="attestationDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, account, name, nick_name, password, password_date, deal_password, deal_password_date, address, birthday, sex, mobile, email, comment, picture, org_id, is_system, create_id, update_id, create_time, update_time, create_name, update_name, is_deleted, status, type, fail_num, is_attestation, attestation_date, amount, id_car, true_name
+    </sql>
+
+    <select id="getAllList" resultType="com.xinyao.bean.usc.User" parameterType="com.xinyao.bean.usc.User">
+        select *
+        from usc_user
+        where is_deleted = 0
+    </select>
+
+    <update id="setDealPassword">
+        update usc_user set deal_password = #{dealPassword}, deal_password_date = #{dateTime} where id = #{id}
+    </update>
+
+</mapper>
