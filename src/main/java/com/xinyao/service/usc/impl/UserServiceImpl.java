@@ -17,6 +17,7 @@ import com.xinyao.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -78,6 +79,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public boolean setDealPassword(String dealPassword) {
         return userMapper.setDealPassword(MD5Util.encrypt(dealPassword, JWTUtil.getAccount()), JWTUtil.getUserId(), new Date()) > 0;
+    }
+
+    @Override
+    public BigDecimal getAccountBalance() {
+        User user = userMapper.selectById(JWTUtil.getUserId());
+        return user.getAmount();
+    }
+
+    @Override
+    public String getDealPassword() {
+        User user = userMapper.selectById(JWTUtil.getUserId());
+        return user.getDealPassword();
     }
 
     /**

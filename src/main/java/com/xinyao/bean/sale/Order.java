@@ -53,7 +53,7 @@ public class Order extends Model<Order> {
     private String comment;
 
     @ApiModelProperty(value = "状态（0：待支付 1：交易中 2：已完成 3：已取消）")
-    private String status;
+    private Integer status;
 
     @ApiModelProperty(value = "创建人id")
     @TableField(fill = FieldFill.INSERT)

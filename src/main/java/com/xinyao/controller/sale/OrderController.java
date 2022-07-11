@@ -6,6 +6,7 @@ import com.xinyao.bean.sale.vo.ProductVo;
 import com.xinyao.service.sale.IOrderService;
 import com.xinyao.util.R;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +35,16 @@ public class OrderController {
     @Autowired
     private IOrderService orderService;
 
+    @ApiOperation("订单详情---立即支付")
     @PostMapping("createOrder")
     public R createOrder(@RequestBody OrderVo orderVo){
         return R.ok(orderService.createOrder(orderVo));
+    }
+
+    @ApiOperation("订单详情---确认支付")
+    @PostMapping("confirmOrder")
+    public R confirmOrder(@RequestBody OrderVo orderVo){
+        return R.ok(orderService.confirmOrder(orderVo));
     }
 
 }

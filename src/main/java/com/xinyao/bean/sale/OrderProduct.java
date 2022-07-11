@@ -86,6 +86,8 @@ public class OrderProduct extends Model<OrderProduct> {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
 
+    @ApiModelProperty(value = "状态（0：待支付 1：交易中 2：已完成 3：已取消）")
+    private Integer status;
 
     @Override
     protected Serializable pkVal() {

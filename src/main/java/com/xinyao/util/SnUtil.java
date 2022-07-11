@@ -30,14 +30,13 @@ public class SnUtil {
 
     /**
      * 获取合同编号
-     * @param orgEncrypt 经销商编号
      * @return 合同编号
      */
-    public String getContractSn(String orgEncrypt) {
+    public String getOrderSn() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         String dateStr = sdf.format(new Date());
-        String sn = "SH" + orgEncrypt + "-" + dateStr;
-        String num = redisUtil.getIncr("CONTRACT_SN:" + dateStr, 4);
+        String sn = "XY" + dateStr;
+        String num = redisUtil.getIncr("CONTRACT_SN:" + dateStr, 5);
         return sn + "-" + num;
     }
 

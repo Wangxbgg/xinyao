@@ -23,8 +23,8 @@ public class Generator {
     public static void main(String[] args) {
         String auth = "WangXB";
         String packageName = "com.xinyao";
-        String path = "D:\\workspace\\java";
-        String url = "192.168.1.15:3306/shopping";
+        String path = "D:\\project\\xinyaoAPP\\src\\main\\java";
+        String url = "192.168.1.11:3306/shopping";
         String username = "root";
         String password = "211114";
         generateTest(auth, packageName, path, url, username, password);
@@ -101,14 +101,14 @@ public class Generator {
                 //表名生成策略  下划线转驼峰
                 .setNaming(NamingStrategy.underline_to_camel)
                 //生成的去掉前缀，可以配置多个
-                .setTablePrefix("sys_","ma_","sale_","usc_")
+                .setTablePrefix("sys_","fund_","sale_","usc_")
                 //自动填充设置
                 .setTableFillList(tableFillList)
                 //修改替换成你需要的表名，多个表名传数组
 //                .setInclude(".*.");
                 .setLogicDeleteFieldName("is_deleted")
                 .setRestControllerStyle(true)
-                .setInclude("sale_order", "sale_order_product");
+                .setInclude("fund_amount_detail");
         //集成注入设置
         //注入全局设置
         new AutoGenerator().setGlobalConfig(config)
@@ -122,11 +122,13 @@ public class Generator {
                                 //提取公共父级包名
                                 .setParent(packageName)
                                 //设置controller信息
-                                .setController("controller.sale")
+                                .setController("controller.fund")
                                 //设置实体类信息
-                                .setEntity("bean.sale")
-                                .setMapper("mapper.sale")
-                                .setXml("mapper.sale")
+                                .setEntity("bean.fund")
+                                .setMapper("mapper.fund")
+                                .setXml("mapper.fund")
+                                .setService("service.fund")
+                                .setServiceImpl("service.fund.impl")
                 )
                 //设置自定义模板
                 .setTemplate(

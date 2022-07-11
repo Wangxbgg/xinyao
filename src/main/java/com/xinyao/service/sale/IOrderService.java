@@ -15,4 +15,6 @@ import com.xinyao.bean.sale.vo.OrderVo;
 public interface IOrderService extends IService<Order> {
 
     OrderVo createOrder(OrderVo orderVo);
+
+    OrderVo confirmOrder(OrderVo orderVo);
 }

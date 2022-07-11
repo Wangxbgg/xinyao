@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xinyao.bean.usc.User;
 
+import java.math.BigDecimal;
+
 /**
  * <p>
  * 用户中心-用户信息表 服务类
@@ -24,4 +26,8 @@ public interface IUserService extends IService<User> {
     boolean deleteById(Long id);
 
     boolean setDealPassword(String dealPassword);
+
+    BigDecimal getAccountBalance();
+
+    String getDealPassword();
 }

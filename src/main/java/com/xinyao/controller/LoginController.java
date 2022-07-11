@@ -7,10 +7,7 @@ import com.xinyao.bean.common.GlobalField;
 import com.xinyao.bean.common.TokenBean;
 import com.xinyao.bean.usc.User;
 import com.xinyao.service.usc.IUserService;
-import com.xinyao.util.JWTUtil;
-import com.xinyao.util.R;
-import com.xinyao.util.RandomNumberUtil;
-import com.xinyao.util.RedisUtil;
+import com.xinyao.util.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.httpclient.Header;
@@ -42,6 +39,9 @@ public class LoginController {
     @GetMapping("sendMsg")
     @ApiOperation("发送验证码")
     public R sendMsg(String phone){
+        if (StringUtils.isNullOrBlank(phone)) {
+            return R.failed("手机号为空！！！");
+        }
         String number = RandomNumberUtil.getPhoneMessage();
         HttpClient client = new HttpClient();
         PostMethod post = new PostMethod("https://utf8api.smschinese.cn/");
@@ -75,6 +75,12 @@ public class LoginController {
     public R dealersLogin(@RequestBody JSONObject jsonObject){
         String phone = jsonObject.getString("phone");
         String code = jsonObject.getString("code");
+        if (StringUtils.isNullOrBlank(phone)) {
+            return R.failed("手机号为空！！！");
+        }
+        if (StringUtils.isNullOrBlank(code)) {
+            return R.failed("验证码为空！！！");
+        }
         try {
             User user = userService.login(phone, code);
             Long userId = user.getId();

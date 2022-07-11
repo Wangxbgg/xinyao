@@ -19,6 +19,16 @@ public class GlobalField {
     public static final String ACCESSKEYID = "226b2b67270832f50a57";
 
     /**
+     * 运算符 +
+     */
+    public static final int OPERATION_ADD = 1;
+
+    /**
+     * 运算符 -
+     */
+    public static final int OPERATION_SUBTRACT = 2;
+
+    /**
      * 储存redis的key
      */
     public static final String REDISKEY = "code:";
@@ -62,4 +72,19 @@ public class GlobalField {
      * 每个角色拥有的权限，存放到Redis的key
      */
     public static final String ROLE_PERMISSION = "ROLE_PERMISSION:";
+
+    /**l
+     * 订单支付有效期，时间为15分钟
+     */
+    public static final long ORDER_TIMEOUT_TIME = 900L;
+
+    /**l
+     * copy的key值
+     */
+    public static final String COPY_KEY = "COPY";
+
+    /**l
+     * 订单--待支付信息存放在redis的key值
+     */
+    public static final String ORDER_CONFIG = "ORDER_CONFIG:";
 }
