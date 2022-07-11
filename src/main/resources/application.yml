@@ -22,7 +22,7 @@ spring:
         min-idle: 8
     password: 123456
   datasource:
-    url: jdbc:mysql://192.168.1.15:3306/shopping?useUnicode=yes&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8
+    url: jdbc:mysql://192.168.1.11:3306/shopping?useUnicode=yes&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8
     driverClassName: com.mysql.cj.jdbc.Driver
     username: root
     password: 211114

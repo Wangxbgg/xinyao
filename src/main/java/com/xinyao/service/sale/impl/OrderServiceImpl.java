@@ -46,6 +46,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             }
         }
         // 生成订单信息
+        Order order = new Order();
 
         // 获取订单商品信息
         List<OrderProduct> orderProductList = new ArrayList<>();
