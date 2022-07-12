@@ -38,7 +38,8 @@ private UserMapper userMapper;
             Integer isAttestation= null;
             if (isoks.equals("true")){
                 isAttestation = 1;
-                userMapper.updateByPrimaryKey(paramBo.getId(),isAttestation);
+                String blockchainAddress = "dhsjkfhs*****4898ds";
+                userMapper.updateByPrimaryKey(paramBo.getId(),isAttestation,blockchainAddress);
                 return R.ok("身份识别成功");
             }else {
                 return R.ok("身份识别失败，请输入正确的身份证其对应姓名");

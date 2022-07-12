@@ -138,6 +138,9 @@ public class User extends Model<User> {
     @ApiModelProperty(value = "身份证号")
     private String idCar;
 
+    @ApiModelProperty(value = "区块链地址")
+
+    private String blockchainAddress;
     @Override
     protected Serializable pkVal() {
         return this.id;

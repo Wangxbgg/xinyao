@@ -101,10 +101,10 @@ public class Generator {
                 //表名生成策略  下划线转驼峰
                 .setNaming(NamingStrategy.underline_to_camel)
                 //生成的去掉前缀，可以配置多个
-                .setTablePrefix("sys_","fund_","sale_","usc_")
+//                .setTablePrefix("sys_","fund_","sale_","usc_")
                 //自动填充设置
                 .setTableFillList(tableFillList)
-                //修改替换成你需要的表名，多个表名传数组
+                //修改替换成你需要的表名，多个表名传数组s
 //                .setInclude(".*.");
                 .setLogicDeleteFieldName("is_deleted")
                 .setRestControllerStyle(true)
