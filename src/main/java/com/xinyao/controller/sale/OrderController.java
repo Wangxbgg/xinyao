@@ -1,6 +1,8 @@
 package com.xinyao.controller.sale;
 
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.xinyao.bean.sale.Order;
 import com.xinyao.bean.sale.vo.OrderVo;
 import com.xinyao.bean.sale.vo.ProductVo;
 import com.xinyao.service.sale.IOrderService;
@@ -10,11 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -35,16 +33,34 @@ public class OrderController {
     @Autowired
     private IOrderService orderService;
 
-    @ApiOperation("订单详情---立即支付")
+    @ApiOperation("订单---订单列表")
+    @GetMapping("getAllList")
+    public R getAllList(Page<Order> page, Integer status) {
+        return R.ok(orderService.getAllList(page, status));
+    }
+
+    @ApiOperation("订单---订单详情")
+    @GetMapping("selectById")
+    public R selectById(Long id) {
+        return R.ok(orderService.selectById(id));
+    }
+
+    @ApiOperation("订单---创建订单")
     @PostMapping("createOrder")
     public R createOrder(@RequestBody OrderVo orderVo){
         return R.ok(orderService.createOrder(orderVo));
     }
 
-    @ApiOperation("订单详情---确认支付")
+    @ApiOperation("订单---确认支付")
     @PostMapping("confirmOrder")
     public R confirmOrder(@RequestBody OrderVo orderVo){
-        return R.ok(orderService.confirmOrder(orderVo));
+        return R.isOk(orderService.confirmOrder(orderVo), "支付");
+    }
+
+    @ApiOperation("订单---取消订单")
+    @PostMapping("confirmOrder")
+    public R cancelOrder(@RequestBody OrderVo orderVo){
+        return R.isOk(orderService.cancelOrder(orderVo), "取消");
     }
 
 }

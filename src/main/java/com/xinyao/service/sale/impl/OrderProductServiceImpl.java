@@ -1,10 +1,13 @@
 package com.xinyao.service.sale.impl;
 
 import com.xinyao.bean.sale.OrderProduct;
+import com.xinyao.bean.sale.vo.OrderProductVo;
 import com.xinyao.mapper.sale.OrderProductMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xinyao.service.sale.IOrderProductService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -17,4 +20,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class OrderProductServiceImpl extends ServiceImpl<OrderProductMapper, OrderProduct> implements IOrderProductService {
 
+    @Override
+    public List<OrderProductVo> getByOrderId(Long orderId) {
+        return this.baseMapper.getByOrderId(orderId);
+    }
 }

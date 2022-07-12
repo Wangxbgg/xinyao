@@ -11,7 +11,7 @@ spring:
     name: shopping
   redis:
     database: 0
-    host: 192.168.1.11
+    host: 192.168.2.126
     port: 6379
     timeout: 5000
     lettuce:
@@ -22,7 +22,7 @@ spring:
         min-idle: 8
     password: 123456
   datasource:
-    url: jdbc:mysql://192.168.1.11:3306/shopping?useUnicode=yes&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8
+    url: jdbc:mysql://192.168.2.126:3306/shopping?useUnicode=yes&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8
     driverClassName: com.mysql.cj.jdbc.Driver
     username: root
     password: 211114

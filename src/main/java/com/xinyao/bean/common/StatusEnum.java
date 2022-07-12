@@ -13,7 +13,7 @@ public class StatusEnum {
      * 订单状态
      */
     @AllArgsConstructor
-    public enum ContractStatus {
+    public enum OrderStatus {
         /**
          * 经销商待购区确认信息时，生成临时合同，锁货15分钟
          */

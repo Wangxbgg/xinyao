@@ -3,6 +3,7 @@ package com.xinyao.service.fund.impl;
 import com.xinyao.bean.common.GlobalField;
 import com.xinyao.bean.common.StatusEnum;
 import com.xinyao.bean.fund.AmountDetail;
+import com.xinyao.bean.sale.Order;
 import com.xinyao.bean.sale.vo.OrderVo;
 import com.xinyao.bean.usc.User;
 import com.xinyao.mapper.fund.AmountDetailMapper;
@@ -37,7 +38,7 @@ public class AmountDetailServiceImpl extends ServiceImpl<AmountDetailMapper, Amo
      * @param amountStatus 支付类型
      */
     @Override
-    public boolean payAmount(OrderVo orderVo, Long userId, BigDecimal payAmount, StatusEnum.AmountStatus amountStatus) {
+    public boolean payAmount(Order order, Long userId, BigDecimal payAmount, StatusEnum.AmountStatus amountStatus) {
         // 再次校验用户余额
         User user = userService.getById(userId);
         if (user.getAmount().compareTo(payAmount) < 0) {
@@ -48,7 +49,7 @@ public class AmountDetailServiceImpl extends ServiceImpl<AmountDetailMapper, Amo
         userService.updateById(user);
 
         // 记录资金明细
-        createAmountDetail(user.getId(), orderVo.getId(), orderVo.getSn(), amountStatus,
+        createAmountDetail(user.getId(), order.getId(), order.getSn(), amountStatus,
                 payAmount, "用户购买商品支付" + payAmount + "元", user.getName());
         return true;
     }

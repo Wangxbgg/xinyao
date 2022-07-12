@@ -2,6 +2,9 @@ package com.xinyao.service.sale;
 
 import com.xinyao.bean.sale.OrderProduct;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.xinyao.bean.sale.vo.OrderProductVo;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IOrderProductService extends IService<OrderProduct> {
 
+    List<OrderProductVo> getByOrderId(Long orderId);
 }

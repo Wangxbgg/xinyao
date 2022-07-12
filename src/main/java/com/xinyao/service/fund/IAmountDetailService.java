@@ -3,6 +3,7 @@ package com.xinyao.service.fund;
 import com.xinyao.bean.common.StatusEnum;
 import com.xinyao.bean.fund.AmountDetail;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.xinyao.bean.sale.Order;
 import com.xinyao.bean.sale.vo.OrderVo;
 
 import java.math.BigDecimal;
@@ -17,6 +18,6 @@ import java.math.BigDecimal;
  */
 public interface IAmountDetailService extends IService<AmountDetail> {
 
-    boolean payAmount(OrderVo orderVo, Long userId, BigDecimal payAmount, StatusEnum.AmountStatus amountStatus);
+    boolean payAmount(Order order, Long userId, BigDecimal payAmount, StatusEnum.AmountStatus amountStatus);
 
 }

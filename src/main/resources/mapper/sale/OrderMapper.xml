@@ -25,4 +25,16 @@
         id, sn, user_id, total_quantity, total_price, comment, status, create_id, create_name, create_time, update_id, update_name, update_time, is_deleted
     </sql>
 
+    <select id="getAllList" resultType="com.xinyao.bean.sale.vo.OrderVo">
+        select *
+        from sale_order
+        where is_deleted = 0
+        <if test="status != '' and status != null and status != 4">
+            and status = #{status}
+        </if>
+        <if test="status == 4">
+            and status = 0
+        </if>
+    </select>
+
 </mapper>
