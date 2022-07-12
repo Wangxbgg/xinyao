@@ -16,7 +16,7 @@ public class UscUserCarBo {
      * 用户id
      */
     @ApiModelProperty(value = "用户id")
-    private Integer userId;
+    private Long userId;
 
     /**
      * 银行名称
@@ -34,7 +34,7 @@ public class UscUserCarBo {
      * 银行卡号
      */
     @ApiModelProperty(value = "银行卡号")
-    private Integer carNumber;
+    private String carNumber;
 
     /**
      * 真实姓名

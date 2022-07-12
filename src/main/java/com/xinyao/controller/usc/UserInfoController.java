@@ -2,6 +2,7 @@ package com.xinyao.controller.usc;
 
 import com.xinyao.bean.Bo.IDBo;
 import com.xinyao.bean.Bo.UserBo.UscUserCarBo;
+import com.xinyao.bean.Bo.fundBo.AmountDetaliBo;
 import com.xinyao.service.usc.Service.UserInfoService;
 import com.xinyao.util.R;
 import io.swagger.annotations.Api;
@@ -29,4 +30,17 @@ public class UserInfoController {
     public R addUscUser(@RequestBody(required = false) UscUserCarBo paramBo) {
         return userInfoService.addUscUser(paramBo);
     }
+
+    @PostMapping("addRecharge")
+    @ApiOperation(value = "充值")
+    public R addRecharge(@RequestBody(required = false) AmountDetaliBo paramBo) {
+        return userInfoService.addRecharge(paramBo);
+    }
+    @PostMapping("addWithdrawal")
+    @ApiOperation(value = "提现")
+    public R addWithdrawal(@RequestBody(required = false) AmountDetaliBo paramBo) {
+        return userInfoService.addWithdrawal(paramBo);
+    }
+
+
 }

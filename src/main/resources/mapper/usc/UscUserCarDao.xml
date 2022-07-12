@@ -80,7 +80,7 @@
         #{type,jdbcType=VARCHAR},
       </if>
       <if test="carNumber != null">
-        #{carNumber,jdbcType=INTEGER},
+        #{carNumber},
       </if>
       <if test="tureName != null">
         #{tureName,jdbcType=VARCHAR},

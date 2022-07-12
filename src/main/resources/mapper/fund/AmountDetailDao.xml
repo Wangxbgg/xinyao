@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xinyao.mapper.fund.AmountDetailMapper">
+<mapper namespace="com.xinyao.mapper.fund.AmountDetailDao">
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.xinyao.bean.fund.AmountDetail">
@@ -46,6 +46,7 @@
             <if test="amount != null">
                 amount,
             </if>
+                create_time,
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="userId != null">
@@ -60,12 +61,10 @@
             <if test="bankCard != null">
                 #{bankCard},
             </if>
-            <if test="tureName != null">
-                #{tureName,jdbcType=VARCHAR},
-            </if>
             <if test="amount != null">
                 #{amount},
             </if>
+            now(),
         </trim>
     </insert>
 
@@ -75,14 +74,37 @@
 
 
     <update id="recharge">
-        update usc_user_car
+        update usc_user
         set amount = #{amount}
-        where id = #{id,jdbcType=INTEGER}
+        where id = #{userId}
     </update>
     <update id="withdrawal">
-        update usc_user_car
+        update usc_user
         set amount = #{amount}
-        where id = #{id,jdbcType=INTEGER}
+        where id = #{userId}
     </update>
 
+
+    <select id="flowinGlist" resultType="com.xinyao.bean.Vo.AmountDetailVo">
+        SELECT amount,comment,transaction,create_time as createTime from fund_amount_detail
+        where 1 = 1
+        <if test="userId != null">
+            AND user_id = #{userId}
+        </if>
+        <if test="transaction != null and transaction!= 0">
+            AND transaction LIKE CONCAT('%',#{transaction},'%')
+        </if>
+        LIMIT #{page},#{pageSize}
+    </select>
+
+    <select id="ConutflowinGlist" resultType="int">
+        select count(1) from fund_amount_detail
+        where 1 = 1
+        <if test="userId != null">
+            AND user_id = #{userId}
+        </if>
+        <if test="transaction != null and transaction!= 0">
+            AND transaction LIKE CONCAT('%',#{transaction},'%')
+        </if>
+    </select>
 </mapper>
