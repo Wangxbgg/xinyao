@@ -34,4 +34,8 @@ public interface IUserService extends IService<User> {
     boolean isAttestation();
 
     boolean isSetDealPassword();
+
+    User authPassword(String phone, String password);
+
+    boolean setPassword(String password);
 }

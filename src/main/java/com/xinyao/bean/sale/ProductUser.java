@@ -1,9 +1,10 @@
 package com.xinyao.bean.sale;
 
-import java.math.BigDecimal;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+
+import java.math.BigDecimal;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.FieldFill;
@@ -18,18 +19,18 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 订单表
+ * 用户商品表
  * </p>
  *
  * @author WangXB
- * @since 2022-07-09
+ * @since 2022-07-12
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("sale_order")
-@ApiModel(value="Order对象", description="订单表")
-public class Order extends Model<Order> {
+@TableName("sale_product_user")
+@ApiModel(value="ProductUser对象", description="用户商品表")
+public class ProductUser extends Model<ProductUser> {
 
     private static final long serialVersionUID = 1L;
 
@@ -37,22 +38,19 @@ public class Order extends Model<Order> {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @ApiModelProperty(value = "订单编号")
-    private String sn;
-
     @ApiModelProperty(value = "用户id")
     private Long userId;
 
-    @ApiModelProperty(value = "订单数量")
-    private Integer totalQuantity;
+    @ApiModelProperty(value = "商品信息")
+    private Long productId;
 
-    @ApiModelProperty(value = "订单金额")
-    private BigDecimal totalPrice;
+    @ApiModelProperty(value = "购买时价格")
+    private BigDecimal buyPrice;
 
-    @ApiModelProperty(value = "备注")
-    private String comment;
+    @ApiModelProperty(value = "链上信息")
+    private String linkInfo;
 
-    @ApiModelProperty(value = "状态（0：待支付 1：交易中 2：已完成 3：已取消）")
+    @ApiModelProperty(value = "转赠状态（0：未转赠 1：转赠中）")
     private Integer status;
 
     @ApiModelProperty(value = "创建人id")

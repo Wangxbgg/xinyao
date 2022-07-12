@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinyao.mapper.sale.TransferMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xinyao.bean.sale.Transfer">
+        <id column="id" property="id" />
+        <result column="transfer_id" property="transferId" />
+        <result column="transfer_phone" property="transferPhone" />
+        <result column="gifted_id" property="giftedId" />
+        <result column="gifted_phone" property="giftedPhone" />
+        <result column="product_id" property="productId" />
+        <result column="order_product_id" property="orderProductId" />
+        <result column="transfer_quantity" property="transferQuantity" />
+        <result column="status" property="status" />
+        <result column="create_id" property="createId" />
+        <result column="create_name" property="createName" />
+        <result column="create_time" property="createTime" />
+        <result column="update_id" property="updateId" />
+        <result column="update_name" property="updateName" />
+        <result column="update_time" property="updateTime" />
+        <result column="is_deleted" property="isDeleted" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, transfer_id, transfer_phone, gifted_id, gifted_phone, product_id, order_product_id, transfer_quantity, status, create_id, create_name, create_time, update_id, update_name, update_time, is_deleted
+    </sql>
+
+    <select id="getPageList" resultType="com.xinyao.bean.sale.vo.TransferVo" parameterType="com.xinyao.bean.sale.Transfer">
+        select t.*
+        from sale_transfer t
+        left join sale_product p on t.product_id = p.id
+        where t.is_deleted = 0
+        <if test="status != null and status != ''">
+            AND t.status = #{status}
+        </if>
+        <if test="type == 1">
+            AND t.transfer_id = #{userId}
+        </if>
+        <if test="type == 2">
+            AND t.gifted_id = #{userId}
+        </if>
+    </select>
+
+</mapper>

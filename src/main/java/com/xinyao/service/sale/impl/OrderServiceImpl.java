@@ -8,6 +8,7 @@ import com.xinyao.bean.common.StatusEnum;
 import com.xinyao.bean.sale.Order;
 import com.xinyao.bean.sale.OrderProduct;
 import com.xinyao.bean.sale.Product;
+import com.xinyao.bean.sale.ProductUser;
 import com.xinyao.bean.sale.vo.OrderProductVo;
 import com.xinyao.bean.sale.vo.OrderVo;
 import com.xinyao.mapper.sale.OrderMapper;
@@ -16,6 +17,7 @@ import com.xinyao.service.fund.IAmountDetailService;
 import com.xinyao.service.sale.IOrderProductService;
 import com.xinyao.service.sale.IOrderService;
 import com.xinyao.service.sale.IProductService;
+import com.xinyao.service.sale.IProductUserService;
 import com.xinyao.service.usc.IUserService;
 import com.xinyao.util.*;
 import org.aspectj.weaver.ast.Or;
@@ -25,6 +27,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -49,6 +53,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     @Autowired
     private IAmountDetailService amountDetailService;
+
+    @Autowired
+    private IProductUserService productUserService;
 
     @Autowired
     private SnUtil snUtil;
@@ -76,14 +83,14 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         order.setStatus(StatusEnum.OrderStatus.PAYMENT.code);
 
         // 订单数量
-        BigDecimal orderQuantity = BigDecimal.ZERO;
+        Integer orderQuantity = 0;
         // 订单金额
         BigDecimal orderPrice = BigDecimal.ZERO;
         // 获取订单商品信息
         for (OrderProductVo orderProductVo : orderVo.getOrderProductVoList()) {
             Product product = productService.getInfoById(orderProductVo.getProductId());
-            orderQuantity = orderQuantity.add(orderProductVo.getProductQuantity());
-            orderPrice = orderPrice.add(product.getAmount().multiply(orderProductVo.getProductQuantity()));
+            orderQuantity = orderQuantity + orderProductVo.getProductQuantity();
+            orderPrice = orderPrice.add(product.getAmount().multiply(new BigDecimal(orderProductVo.getProductQuantity())));
         }
         order.setTotalPrice(orderPrice);
         order.setTotalQuantity(orderQuantity);
@@ -130,6 +137,14 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     public boolean confirmOrder(OrderVo orderVo) {
         // 获取订单信息
         Order order = this.baseMapper.selectById(orderVo.getId());
+        // 判断订单状态是否已取消
+        if (order.getStatus().equals(StatusEnum.OrderStatus.CANCEL.code)) {
+            throw new RuntimeException("该订单已取消！！！");
+        }
+        // 判断订单状态是否已支付
+        if (!order.getStatus().equals(StatusEnum.OrderStatus.PAYMENT.code)) {
+            throw new RuntimeException("该订单已支付！！！");
+        }
         // 获取订单商品信息
         List<OrderProductVo> orderProductVoList = orderProductService.getByOrderId(order.getId());
 
@@ -160,13 +175,25 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         order.setStatus(StatusEnum.OrderStatus.FINISH.code);
         this.baseMapper.updateById(order);
         // 修改订单商品状态为已完成
+        List<ProductUser> productUserList = new ArrayList<>();
         for (OrderProductVo orderProductVo : orderProductVoList) {
             orderProductVo.setStatus(StatusEnum.OrderStatus.FINISH.code);
             orderProductService.updateById(orderProductVo);
+
+            for (int i = 0; i < orderProductVo.getProductQuantity().intValue(); i++) {
+                ProductUser productUser = new ProductUser();
+                productUser.setUserId(JWTUtil.getUserId());
+                productUser.setProductId(orderProductVo.getProductId());
+                productUser.setLinkInfo("hash:" + System.currentTimeMillis() + "");
+                productUserList.add(productUser);
+            }
         }
 
         // 调用支付接口，进行余额扣款并记录支付信息
         amountDetailService.payAmount(order, JWTUtil.getUserId(), order.getTotalPrice(), StatusEnum.AmountStatus.NORMAL_PAY);
+
+        // 保存数据到用户商品表
+        productUserService.saveOrUpdateBatch(productUserList);
 
         // 将该用户的待支付订单信息保存到redis中
         redisUtil.remove(GlobalField.ORDER_CONFIG + JWTUtil.getUserId());
@@ -178,7 +205,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     @Override
     public IPage<OrderVo> getAllList(Page<Order> page, Integer status) {
-        if (status == 0) {
+        if (status != null && status == 0) {
             status = 4;
         }
         IPage<OrderVo> iPage = this.baseMapper.getAllList(page, status);
@@ -196,6 +223,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     @Override
     public OrderVo selectById(Long id) {
+        // 获取订单信息
         Order order = this.baseMapper.selectById(id);
         OrderVo orderVo = new OrderVo();
         BeanUtils.copyProperties(order, orderVo);
@@ -211,9 +239,14 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean cancelOrder(Long orderId) {
         // 获取订单信息
         Order order = this.baseMapper.selectById(orderId);
+        // 判断订单状态是否已取消
+        if (order.getStatus().equals(StatusEnum.OrderStatus.CANCEL.code)) {
+            throw new RuntimeException("该订单已取消！！！");
+        }
         // 获取订单商品信息
         List<OrderProductVo> orderProductVoList = orderProductService.getByOrderId(order.getId());
 
@@ -226,26 +259,26 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             orderProductVo.setStatus(StatusEnum.OrderStatus.CANCEL.code);
             orderProductService.updateById(orderProductVo);
             // 退还商品库存
-            updateStock(orderProductVo.getId(), orderProductVo.getProductQuantity(), true);
+            updateStock(orderProductVo.getProductId(), orderProductVo.getProductQuantity(), true);
         }
 
         // 删除redis的记录
         redisUtil.remove(GlobalField.ORDER_CONFIG + JWTUtil.getUserId());
         // 删除copy key的记录
         redisUtil.remove(GlobalField.COPY_KEY + GlobalField.ORDER_CONFIG + JWTUtil.getUserId());
-        return false;
+        return true;
     }
 
     /**
      * 处理商品库存
      * @Param productId 商品id，quantity 商品数量，flag true +；false -
      */
-    private void updateStock(Long productId, BigDecimal quantity, boolean flag){
+    private void updateStock(Long productId, Integer quantity, boolean flag){
         Product product = productService.getInfoById(productId);
         if (flag) {
-            product.setQuantity(product.getQuantity().add(quantity));
+            product.setQuantity(product.getQuantity() + quantity);
         } else {
-            product.setQuantity(product.getQuantity().subtract(quantity));
+            product.setQuantity(product.getQuantity() - quantity);
         }
         productService.updateById(product);
     }

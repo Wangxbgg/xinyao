@@ -19,11 +19,13 @@
         <result column="update_id" property="updateId" />
         <result column="update_name" property="updateName" />
         <result column="update_time" property="updateTime" />
+        <result column="status" property="status" />
+        <result column="link_info" property="linkInfo" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, user_id, order_id, order_sn, product_id, product_number, product_quantity, buy_price, is_deleted, create_id, create_name, create_time, update_id, update_name, update_time
+        id, user_id, order_id, order_sn, product_id, product_number, product_quantity, buy_price, is_deleted, create_id, create_name, create_time, update_id, update_name, update_time, status, link_info
     </sql>
 
     <select id="getByOrderId" resultType="com.xinyao.bean.sale.vo.OrderProductVo">

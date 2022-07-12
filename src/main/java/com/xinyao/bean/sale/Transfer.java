@@ -18,18 +18,18 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 订单表
+ * 转赠记录表
  * </p>
  *
  * @author WangXB
- * @since 2022-07-09
+ * @since 2022-07-12
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("sale_order")
-@ApiModel(value="Order对象", description="订单表")
-public class Order extends Model<Order> {
+@TableName("sale_transfer")
+@ApiModel(value="Transfer对象", description="转赠记录表")
+public class Transfer extends Model<Transfer> {
 
     private static final long serialVersionUID = 1L;
 
@@ -37,22 +37,28 @@ public class Order extends Model<Order> {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @ApiModelProperty(value = "订单编号")
-    private String sn;
+    @ApiModelProperty(value = "转赠方id")
+    private Long transferId;
 
-    @ApiModelProperty(value = "用户id")
-    private Long userId;
+    @ApiModelProperty(value = "转赠方手机号")
+    private String transferPhone;
 
-    @ApiModelProperty(value = "订单数量")
-    private Integer totalQuantity;
+    @ApiModelProperty(value = "受赠方id")
+    private Long giftedId;
 
-    @ApiModelProperty(value = "订单金额")
-    private BigDecimal totalPrice;
+    @ApiModelProperty(value = "受赠方手机号")
+    private String giftedPhone;
 
-    @ApiModelProperty(value = "备注")
-    private String comment;
+    @ApiModelProperty(value = "商品id")
+    private Long productId;
 
-    @ApiModelProperty(value = "状态（0：待支付 1：交易中 2：已完成 3：已取消）")
+    @ApiModelProperty(value = "订单商品id")
+    private Long orderProductId;
+
+    @ApiModelProperty(value = "转赠数量")
+    private Integer transferQuantity;
+
+    @ApiModelProperty(value = "状态（1：已提交 2：转赠中/待接收 3：已完成 4：已取消）")
     private Integer status;
 
     @ApiModelProperty(value = "创建人id")

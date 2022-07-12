@@ -4,9 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xinyao.bean.common.GlobalField;
-import com.xinyao.bean.sale.Product;
-import com.xinyao.bean.sale.vo.ProductVo;
 import com.xinyao.bean.usc.User;
 import com.xinyao.mapper.usc.UserMapper;
 import com.xinyao.service.usc.IUserService;
@@ -34,9 +31,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Autowired
     private RedisUtil redisUtil;
 
-    @Autowired
-    private UserMapper userMapper;
-
     @Override
     public User login(String phone, String code) {
         /*String oldCode = redisUtil.get(GlobalField.REDISKEY+phone).toString();
@@ -50,13 +44,34 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         if (user == null) {
             throw new RuntimeException("手机号错误或不存在！！！");
         }*/
-        User user = this.userMapper.selectById(1);
+        User user = this.baseMapper.selectById(1);
         return user;
     }
 
     @Override
+    public User authPassword(String phone, String password) {
+        /*QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("mobile", phone);
+        queryWrapper.eq("is_deleted", 0);
+        User user = this.baseMapper.selectOne(queryWrapper);
+        if (user == null) {
+            throw new RuntimeException("手机号错误或不存在！！！");
+        }
+        if (!MD5Util.encrypt(password, user.getMobile()).equals(user.getPassword())) {
+            throw new RuntimeException("密码错误！！！");
+        }*/
+        User user = this.baseMapper.selectById(1);
+        return user;
+    }
+
+    @Override
+    public boolean setPassword(String password) {
+        return this.baseMapper.setPassword(MD5Util.encrypt(password, JWTUtil.getAccount()), JWTUtil.getUserId(), new Date()) > 0;
+    }
+
+    @Override
     public IPage<User> getAllList(Page<User> page, User user) {
-        IPage<User> productVoIPage = userMapper.getAllList(page, user);
+        IPage<User> productVoIPage = this.baseMapper.getAllList(page, user);
         return productVoIPage;
     }
 
@@ -66,43 +81,46 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         if (check > 1) {
             return check;
         }
-        if (StringUtils.isNotNullOrBlank(user.getId())) {
-            return userMapper.updateById(user);
+        if (StringUtils.isNotNullOrBlank(user.getPassword())) {
+            user.setPassword(MD5Util.encrypt(user.getPassword(), user.getMobile()));
         }
-        return userMapper.insert(user);
+        if (StringUtils.isNotNullOrBlank(user.getId())) {
+            return this.baseMapper.updateById(user);
+        }
+        return this.baseMapper.insert(user);
     }
 
     @Override
     public boolean deleteById(Long id) {
-        return userMapper.deleteById(id) > 0;
+        return this.baseMapper.deleteById(id) > 0;
     }
 
     @Override
     public boolean setDealPassword(String dealPassword) {
-        return userMapper.setDealPassword(MD5Util.encrypt(dealPassword, JWTUtil.getAccount()), JWTUtil.getUserId(), new Date()) > 0;
+        return this.baseMapper.setDealPassword(MD5Util.encrypt(dealPassword, JWTUtil.getAccount()), JWTUtil.getUserId(), new Date()) > 0;
     }
 
     @Override
     public BigDecimal getAccountBalance() {
-        User user = userMapper.selectById(JWTUtil.getUserId());
+        User user = this.baseMapper.selectById(JWTUtil.getUserId());
         return user.getAmount();
     }
 
     @Override
     public String getDealPassword() {
-        User user = userMapper.selectById(JWTUtil.getUserId());
+        User user = this.baseMapper.selectById(JWTUtil.getUserId());
         return user.getDealPassword();
     }
 
     @Override
     public boolean isAttestation() {
-        User user = userMapper.selectById(JWTUtil.getUserId());
+        User user = this.baseMapper.selectById(JWTUtil.getUserId());
         return user.getIsAttestation() == 1;
     }
 
     @Override
     public boolean isSetDealPassword() {
-        User user = userMapper.selectById(JWTUtil.getUserId());
+        User user = this.baseMapper.selectById(JWTUtil.getUserId());
         return StringUtils.isNotNullOrBlank(user.getDealPassword());
     }
 
@@ -117,17 +135,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
         if (StringUtils.isNotNullOrBlank(user.getAccount())) {
             queryWrapper.eq("account", user.getAccount());
-            User u = userMapper.selectOne(queryWrapper);
+            User u = this.baseMapper.selectOne(queryWrapper);
             return u!=null ? 2: 1;
         }
         if (StringUtils.isNotNullOrBlank(user.getName())) {
             queryWrapper.eq("name", user.getName());
-            User u = userMapper.selectOne(queryWrapper);
+            User u = this.baseMapper.selectOne(queryWrapper);
             return u!=null ? 3: 1;
         }
         if (StringUtils.isNotNullOrBlank(user.getMobile())) {
             queryWrapper.eq("mobile", user.getMobile());
-            User u = userMapper.selectOne(queryWrapper);
+            User u = this.baseMapper.selectOne(queryWrapper);
             return u!=null ? 4: 1;
         }
         return 1;

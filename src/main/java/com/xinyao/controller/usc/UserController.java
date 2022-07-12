@@ -57,5 +57,11 @@ public class UserController {
         return R.isOk(userService.setDealPassword(map.get("dealPassword")), "设置");
     }
 
+    @ApiOperation("设置登录密码")
+    @PostMapping("setPassword")
+    public R setPassword(@RequestBody Map<String, String> map){
+        return R.isOk(userService.setPassword(map.get("password")), "设置");
+    }
+
 }
 
