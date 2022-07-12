@@ -25,5 +25,5 @@ public interface IOrderService extends IService<Order> {
 
     OrderVo selectById(Long id);
 
-    boolean cancelOrder(OrderVo orderVo);
+    boolean cancelOrder(Long orderId);
 }

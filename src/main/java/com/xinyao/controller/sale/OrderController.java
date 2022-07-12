@@ -58,7 +58,7 @@ public class OrderController {
     }
 
     @ApiOperation("订单---取消订单")
-    @PostMapping("confirmOrder")
+    @PostMapping("cancelOrder")
     public R cancelOrder(@RequestBody OrderVo orderVo){
         return R.isOk(orderService.cancelOrder(orderVo), "取消");
     }

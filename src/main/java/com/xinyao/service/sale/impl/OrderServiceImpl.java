@@ -211,9 +211,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     }
 
     @Override
-    public boolean cancelOrder(OrderVo orderVo) {
+    public boolean cancelOrder(Long orderId) {
         // 获取订单信息
-        Order order = this.baseMapper.selectById(orderVo.getId());
+        Order order = this.baseMapper.selectById(orderId);
         // 获取订单商品信息
         List<OrderProductVo> orderProductVoList = orderProductService.getByOrderId(order.getId());
 
