@@ -26,5 +26,8 @@ public interface UserMapper extends BaseMapper<User> {
 
     Integer setDealPassword(@Param("dealPassword") String dealPassword, @Param("id") Long id, @Param("dateTime") Date dateTime);
 
-    int updateByPrimaryKey(Long id,Integer isAttestation);
+    int updateByPrimaryKey(Long id,Integer isAttestation,String blockchainAddress);
+
+    User selectByPrimaryKey(Long Id);
+
 }

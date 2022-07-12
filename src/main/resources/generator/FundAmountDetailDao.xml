@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="generate.FundAmountDetailDao">
+  <resultMap id="BaseResultMap" type="generate.FundAmountDetail">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="order_id" jdbcType="BIGINT" property="orderId" />
+    <result column="order_sn" jdbcType="VARCHAR" property="orderSn" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="operation_symbol" jdbcType="INTEGER" property="operationSymbol" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="create_id" jdbcType="BIGINT" property="createId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_name" jdbcType="VARCHAR" property="createName" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="comment" jdbcType="VARCHAR" property="comment" />
+    <result column="transaction_num" jdbcType="VARCHAR" property="transactionNum" />
+    <result column="transaction_date" jdbcType="VARCHAR" property="transactionDate" />
+    <result column="bank_card" jdbcType="VARCHAR" property="bankCard" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, user_name, order_id, order_sn, `type`, operation_symbol, amount, create_id, 
+    create_time, create_name, `status`, `comment`, transaction_num, transaction_date, 
+    bank_card
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from fund_amount_detail
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from fund_amount_detail
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="generate.FundAmountDetail" useGeneratedKeys="true">
+    insert into fund_amount_detail (user_id, user_name, order_id, 
+      order_sn, `type`, operation_symbol, 
+      amount, create_id, create_time, 
+      create_name, `status`, `comment`, 
+      transaction_num, transaction_date, bank_card
+      )
+    values (#{userId,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR}, #{orderId,jdbcType=BIGINT}, 
+      #{orderSn,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{operationSymbol,jdbcType=INTEGER}, 
+      #{amount,jdbcType=DECIMAL}, #{createId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{createName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{comment,jdbcType=VARCHAR}, 
+      #{transactionNum,jdbcType=VARCHAR}, #{transactionDate,jdbcType=VARCHAR}, #{bankCard,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="generate.FundAmountDetail" useGeneratedKeys="true">
+    insert into fund_amount_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="orderSn != null">
+        order_sn,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="operationSymbol != null">
+        operation_symbol,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="createId != null">
+        create_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="createName != null">
+        create_name,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="comment != null">
+        `comment`,
+      </if>
+      <if test="transactionNum != null">
+        transaction_num,
+      </if>
+      <if test="transactionDate != null">
+        transaction_date,
+      </if>
+      <if test="bankCard != null">
+        bank_card,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="orderSn != null">
+        #{orderSn,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="operationSymbol != null">
+        #{operationSymbol,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="createId != null">
+        #{createId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createName != null">
+        #{createName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="comment != null">
+        #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="transactionNum != null">
+        #{transactionNum,jdbcType=VARCHAR},
+      </if>
+      <if test="transactionDate != null">
+        #{transactionDate,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCard != null">
+        #{bankCard,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="generate.FundAmountDetail">
+    update fund_amount_detail
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="orderSn != null">
+        order_sn = #{orderSn,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="operationSymbol != null">
+        operation_symbol = #{operationSymbol,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="createId != null">
+        create_id = #{createId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createName != null">
+        create_name = #{createName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="comment != null">
+        `comment` = #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="transactionNum != null">
+        transaction_num = #{transactionNum,jdbcType=VARCHAR},
+      </if>
+      <if test="transactionDate != null">
+        transaction_date = #{transactionDate,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCard != null">
+        bank_card = #{bankCard,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="generate.FundAmountDetail">
+    update fund_amount_detail
+    set user_id = #{userId,jdbcType=BIGINT},
+      user_name = #{userName,jdbcType=VARCHAR},
+      order_id = #{orderId,jdbcType=BIGINT},
+      order_sn = #{orderSn,jdbcType=VARCHAR},
+      `type` = #{type,jdbcType=VARCHAR},
+      operation_symbol = #{operationSymbol,jdbcType=INTEGER},
+      amount = #{amount,jdbcType=DECIMAL},
+      create_id = #{createId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_name = #{createName,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=INTEGER},
+      `comment` = #{comment,jdbcType=VARCHAR},
+      transaction_num = #{transactionNum,jdbcType=VARCHAR},
+      transaction_date = #{transactionDate,jdbcType=VARCHAR},
+      bank_card = #{bankCard,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

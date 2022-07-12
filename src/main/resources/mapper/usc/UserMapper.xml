@@ -33,6 +33,7 @@
         <result column="fail_num" property="failNum" />
         <result column="is_attestation" property="isAttestation" />
         <result column="attestation_date" property="attestationDate" />
+        <result column="blockchain_address" property="blockchainAddress" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -53,8 +54,16 @@
     <update id="updateByPrimaryKey" parameterType="com.xinyao.bean.usc.User">
         update usc_user
         set is_attestation = #{isAttestation},
+            blockchain_address = #{blockchainAddress},
             attestation_date = now()
         where id = #{id,jdbcType=INTEGER}
     </update>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        id,name,amount,blockchain_address,is_attestation
+        from usc_user
+        where id = #{Id}
+    </select>
 
 </mapper>
