@@ -41,9 +41,10 @@ public class TransferServiceImpl extends ServiceImpl<TransferMapper, Transfer> i
 
     @Override
     public IPage<TransferVo> getPageList(Page<Transfer> page, Integer status, Integer type) {
-        // 获取转赠
+        // 获取转赠信息
         IPage<TransferVo> transferVoIPage = this.baseMapper.getPageList(page, status, type, JWTUtil.getUserId());
         for (TransferVo transferVo : transferVoIPage.getRecords()) {
+            // 获取转赠商品信息
             Product product = productService.getById(transferVo.getProductId());
             ProductVo productVo = new ProductVo();
             BeanUtils.copyProperties(product, productVo);

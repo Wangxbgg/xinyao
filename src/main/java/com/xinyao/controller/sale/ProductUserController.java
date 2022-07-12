@@ -23,12 +23,11 @@ import org.springframework.web.bind.annotation.*;
  * @author WangXB
  * @since 2022-07-12
  */
-@Api(tags = "APP端---藏馆")
+@Api(tags = "APP端-藏馆")
 @RestController
 @RequestMapping("/productUser")
-
 @ApiResponses({
-        @ApiResponse(code = 200,message = "OK",response = TransferBo.class),
+        @ApiResponse(code = 200,message = "OK",response = ProductVo.class),
 })
 public class ProductUserController {
 

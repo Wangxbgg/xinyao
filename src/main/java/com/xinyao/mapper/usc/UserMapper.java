@@ -28,6 +28,7 @@ public interface UserMapper extends BaseMapper<User> {
 
     int updateByPrimaryKey(Long id,Integer isAttestation,String blockchainAddress);
 
-    User selectByPrimaryKey(Long Id);
+    User selectByPrimaryKey(Long id);
 
+    Integer setPassword(@Param("password") String password, @Param("id") Long id, @Param("dateTime") Date dateTime);
 }

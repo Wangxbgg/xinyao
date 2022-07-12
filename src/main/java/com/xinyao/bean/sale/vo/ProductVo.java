@@ -1,6 +1,7 @@
 package com.xinyao.bean.sale.vo;
 
 import com.xinyao.bean.sale.Product;
+import com.xinyao.bean.sale.ProductUser;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -23,5 +24,8 @@ public class ProductVo extends Product {
 
     @ApiModelProperty("用户商品id")
     private Long userProductId;
+
+    @ApiModelProperty("用户商品信息")
+    private ProductUser productUser;
 
 }

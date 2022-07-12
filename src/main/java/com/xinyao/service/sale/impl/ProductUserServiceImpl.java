@@ -43,14 +43,25 @@ public class ProductUserServiceImpl extends ServiceImpl<ProductUserMapper, Produ
     @Autowired
     private ITransferService transferService;
 
+    @Autowired
+    private IProductUserService productUserService;
+
     @Override
     public IPage<ProductVo> getInfoByUserId(Page<ProductUser> page, Integer collectionsId) {
-        return this.baseMapper.getInfoByUserId(page, JWTUtil.getUserId(), collectionsId);
+        IPage<ProductVo> productVoIPage = this.baseMapper.getInfoByUserId(page, JWTUtil.getUserId(), collectionsId);
+        for (ProductVo productVo : productVoIPage.getRecords()) {
+            productVo.setProductUser(productUserService.getById(productVo.getUserProductId()));
+        }
+        return productVoIPage;
     }
 
     @Override
     public IPage<ProductVo> getPageByProductId(Page<ProductUser> page, Long productId) {
-        return this.baseMapper.getPageByProductId(page, JWTUtil.getUserId(), productId);
+        IPage<ProductVo> productVoIPage = this.baseMapper.getPageByProductId(page, JWTUtil.getUserId(), productId);
+        for (ProductVo productVo : productVoIPage.getRecords()) {
+            productVo.setProductUser(productUserService.getById(productVo.getUserProductId()));
+        }
+        return productVoIPage;
     }
 
     @Override
