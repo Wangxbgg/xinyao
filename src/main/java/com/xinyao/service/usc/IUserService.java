@@ -30,4 +30,8 @@ public interface IUserService extends IService<User> {
     BigDecimal getAccountBalance();
 
     String getDealPassword();
+
+    boolean isAttestation();
+
+    boolean isSetDealPassword();
 }

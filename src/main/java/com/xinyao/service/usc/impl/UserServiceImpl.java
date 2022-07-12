@@ -94,6 +94,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         return user.getDealPassword();
     }
 
+    @Override
+    public boolean isAttestation() {
+        User user = userMapper.selectById(JWTUtil.getUserId());
+        return user.getIsAttestation() == 1;
+    }
+
+    @Override
+    public boolean isSetDealPassword() {
+        User user = userMapper.selectById(JWTUtil.getUserId());
+        return StringUtils.isNotNullOrBlank(user.getDealPassword());
+    }
+
     /**
      * 校验用户唯一性
      */

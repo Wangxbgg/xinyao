@@ -10,11 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -36,6 +32,24 @@ public class UserController {
 
     @Autowired
     private IUserService userService;
+
+    @ApiOperation("查询用户余额")
+    @GetMapping("getAccountBalance")
+    public R getAccountBalance(){
+        return R.ok(userService.getAccountBalance());
+    }
+
+    @ApiOperation("是否实名认证")
+    @GetMapping("isAttestation")
+    public R isAttestation(){
+        return R.ok(userService.isAttestation());
+    }
+
+    @ApiOperation("是否设置交易密码")
+    @GetMapping("isSetDealPassword")
+    public R isSetDealPassword(){
+        return R.ok(userService.isSetDealPassword());
+    }
 
     @ApiOperation("设置交易密码")
     @PostMapping("setDealPassword")
