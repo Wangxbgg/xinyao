@@ -50,4 +50,11 @@
         update usc_user set deal_password = #{dealPassword}, deal_password_date = #{dateTime} where id = #{id}
     </update>
 
+    <update id="updateByPrimaryKey" parameterType="com.xinyao.bean.usc.User">
+        update usc_user
+        set is_attestation = #{isAttestation},
+            attestation_date = now()
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
 </mapper>
