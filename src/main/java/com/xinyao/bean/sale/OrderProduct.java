@@ -53,7 +53,7 @@ public class OrderProduct extends Model<OrderProduct> {
     private String productNumber;
 
     @ApiModelProperty(value = "商品数量")
-    private BigDecimal productQuantity;
+    private Integer productQuantity;
 
     @ApiModelProperty(value = "购买时价格")
     private BigDecimal buyPrice;
@@ -88,6 +88,9 @@ public class OrderProduct extends Model<OrderProduct> {
 
     @ApiModelProperty(value = "状态（0：待支付 1：交易中 2：已完成 3：已取消）")
     private Integer status;
+
+    @ApiModelProperty(value = "链上信息")
+    private String linkInfo;
 
     @Override
     protected Serializable pkVal() {

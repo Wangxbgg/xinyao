@@ -40,7 +40,7 @@ public class Product extends Model<Product> {
     private String number;
 
     @ApiModelProperty(value = "商品数量")
-    private BigDecimal quantity;
+    private Integer quantity;
 
     @ApiModelProperty(value = "商品权益")
     private String interests;
@@ -55,7 +55,7 @@ public class Product extends Model<Product> {
     private String issueVersion;
 
     @ApiModelProperty(value = "发行数量")
-    private BigDecimal issueQuantity;
+    private Integer issueQuantity;
 
     @ApiModelProperty(value = "发行方")
     @TableField("Issued")
@@ -75,6 +75,12 @@ public class Product extends Model<Product> {
 
     @ApiModelProperty(value = "藏馆名称")
     private String collectionsName;
+
+    @ApiModelProperty(value = "系列id")
+    private Integer seriesId;
+
+    @ApiModelProperty(value = "系列名称")
+    private String seriesName;
 
     @ApiModelProperty(value = "预购须知")
     private String remark;

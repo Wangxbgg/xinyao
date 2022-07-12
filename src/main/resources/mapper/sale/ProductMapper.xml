@@ -28,11 +28,13 @@
         <result column="update_time" property="updateTime" />
         <result column="type" property="type" />
         <result column="sort" property="sort" />
+        <result column="series_id" property="seriesId" />
+        <result column="series_name" property="seriesName" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, number, quantity, interests, icon_url, amount, issue_version, issue_quantity, Issued, issue_time, booking_time, description, remark, is_shelves, is_deleted, type, sort
+        id, name, number, quantity, interests, icon_url, amount, issue_version, issue_quantity, Issued, issue_time, booking_time, description, remark, is_shelves, is_deleted, type, sort, series_id, series_name
     </sql>
 
     <select id="getAllList" resultType="com.xinyao.bean.sale.vo.ProductVo" parameterType="com.xinyao.bean.sale.Product">
@@ -41,20 +43,6 @@
         from sale_product
         where is_deleted = 0
         order by booking_time DESC
-    </select>
-
-    <select id="getInfoByUserId" resultType="com.xinyao.bean.sale.vo.ProductVo" parameterType="com.xinyao.bean.sale.Product">
-        select
-        p.*, SUM(op.product_quantity) productQuantity, op.buy_price
-        from sale_product p
-        left join sale_order_product op on op.product_id = p.id
-        left join usc_user u on op.user_id = u.id
-        where op.is_deleted = 0 AND u.id = #{userId}
-        <if test="collectionsId != null and collectionsId != ''">
-            AND  p.collections_id = #{collectionsId}
-        </if>
-        group by op.product_id
-        order by p.sort DESC
     </select>
 
 </mapper>

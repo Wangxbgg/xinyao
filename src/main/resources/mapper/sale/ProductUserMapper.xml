@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinyao.mapper.sale.ProductUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xinyao.bean.sale.ProductUser">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="product_id" property="productId" />
+        <result column="buy_price" property="buyPrice" />
+        <result column="link_info" property="linkInfo" />
+        <result column="status" property="status" />
+        <result column="create_id" property="createId" />
+        <result column="create_name" property="createName" />
+        <result column="create_time" property="createTime" />
+        <result column="update_id" property="updateId" />
+        <result column="update_name" property="updateName" />
+        <result column="update_time" property="updateTime" />
+        <result column="is_deleted" property="isDeleted" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, product_id, buy_price, link_info, status, create_id, create_name, create_time, update_id, update_name, update_time, is_deleted
+    </sql>
+
+    <select id="getInfoByUserId" resultType="com.xinyao.bean.sale.vo.ProductVo" parameterType="com.xinyao.bean.sale.ProductUser">
+        select
+        p.*, COUNT(pu.product_id) productQuantity, pu.buy_price
+        from sale_product p
+        left join sale_product_user pu on pu.product_id = p.id
+        left join usc_user u on pu.user_id = u.id
+        where pu.is_deleted = 0 AND u.id = #{userId} AND pu.status = 0
+        <if test="collectionsId != null and collectionsId != ''">
+            AND  p.collections_id = #{collectionsId}
+        </if>
+        group by pu.product_id
+        order by p.sort DESC
+    </select>
+
+    <select id="getPageByProductId" resultType="com.xinyao.bean.sale.vo.ProductVo" parameterType="com.xinyao.bean.sale.ProductUser">
+        select
+        p.*, pu.buy_price
+        from sale_product p
+        left join sale_product_user pu on pu.product_id = p.id
+        left join usc_user u on pu.user_id = u.id
+        where pu.is_deleted = 0 AND u.id = #{userId} AND pu.status = 0
+        <if test="productId != null and productId != ''">
+            AND  pu.product_id = #{productId}
+        </if>
+        order by p.sort DESC
+    </select>
+
+    <select id="getListByProductId" resultType="com.xinyao.bean.sale.vo.ProductVo" parameterType="com.xinyao.bean.sale.ProductUser">
+        select
+        p.*, pu.buy_price, pu.id userProductId
+        from sale_product p
+        left join sale_product_user pu on pu.product_id = p.id
+        left join usc_user u on pu.user_id = u.id
+        where pu.is_deleted = 0 AND u.id = #{userId} AND pu.status = #{status}
+        <if test="productId != null and productId != ''">
+            AND  pu.product_id = #{productId}
+        </if>
+        order by p.sort DESC
+    </select>
+
+</mapper>

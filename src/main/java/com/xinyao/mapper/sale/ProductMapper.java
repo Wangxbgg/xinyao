@@ -23,5 +23,4 @@ public interface ProductMapper extends BaseMapper<Product> {
 
     IPage<ProductVo> getAllList(@Param("page") Page<Product> page, @Param("product") Product product);
 
-    IPage<ProductVo> getInfoByUserId(@Param("page") Page<Product> page, @Param("userId") Long userId, @Param("collectionsId") Integer collectionsId);
 }

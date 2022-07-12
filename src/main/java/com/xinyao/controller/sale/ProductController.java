@@ -48,11 +48,5 @@ public class ProductController {
         }
         return R.ok(product);
     }
-
-    @GetMapping("/getInfoByUserId")
-    @ApiOperation(value = "根据用户id查询商品")
-    public R getInfoByUserId(Page<Product> page, Integer collectionsId) {
-        return R.ok(productService.getInfoByUserId(page, collectionsId));
-    }
 }
 

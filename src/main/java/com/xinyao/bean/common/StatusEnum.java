@@ -15,22 +15,22 @@ public class StatusEnum {
     @AllArgsConstructor
     public enum OrderStatus {
         /**
-         * 经销商待购区确认信息时，生成临时合同，锁货15分钟
+         * 用户创建订单尚未支付
          */
         PAYMENT(0, "待支付"),
 
         /**
-         * 合同支付成功，进入到正常状态
+         * 用户将商品进行二次出售
          */
         TRADE(1, "交易中"),
 
         /**
-         * 管理人员进行合同作废操作
+         * 订单支付成功
          */
         FINISH(2, "已完成"),
 
         /**
-         * 管理人员进行合同失效操作
+         * 取消订单
          */
         CANCEL(3, "已取消");
 
@@ -50,22 +50,22 @@ public class StatusEnum {
     @AllArgsConstructor
     public enum AmountStatus {
         /**
-         * 经销商待购区确认信息时，生成临时合同，锁货15分钟
+         * 用户创建订单支付金额
          */
         NORMAL_PAY("NORMAL_PAY", "正常支付"),
 
         /**
-         * 合同支付成功，进入到正常状态
+         * 用户转售商品收入金额
          */
         NORMAL_REVENUE("NORMAL_REVENUE", "正常收入"),
 
         /**
-         * 管理人员进行合同作废操作
+         * 银行卡充值余额
          */
         BANK_TRANSFER_IN("BANK_TRANSFER_IN", "银行转入"),
 
         /**
-         * 管理人员进行合同失效操作
+         * 余额提现银行卡
          */
         BANK_TRANSFER_OUT("BANK_TRANSFER_OUT", "银行转出");
 
@@ -73,6 +73,41 @@ public class StatusEnum {
          * 状态
          */
         public final String code;
+        /**
+         * 描述
+         */
+        public final String desc;
+    }
+
+    /**
+     * 转赠状态
+     */
+    @AllArgsConstructor
+    public enum TransferStatus {
+        /**
+         * 创建转赠记录未确认受赠人
+         */
+        COMMIT(1, "已提交"),
+
+        /**
+         * 合同支付成功，进入到正常状态
+         */
+        PROGRESS(2, "转赠中/待接收"),
+
+        /**
+         * 管理人员进行合同作废操作
+         */
+        FINISH(3, "已完成"),
+
+        /**
+         * 管理人员进行合同失效操作
+         */
+        CANCEL(4, "已取消");
+
+        /**
+         * 状态
+         */
+        public final Integer code;
         /**
          * 描述
          */

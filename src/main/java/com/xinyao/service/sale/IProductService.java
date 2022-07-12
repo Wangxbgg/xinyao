@@ -26,7 +26,6 @@ public interface IProductService extends IService<Product> {
 
     Integer createOrUpdate(Product product);
 
-    Product getInfoById(Long id);
+    ProductVo getInfoById(Long id);
 
-    IPage<ProductVo> getInfoByUserId(Page<Product> page, Integer collectionsId);
 }
